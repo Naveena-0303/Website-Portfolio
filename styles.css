@@ -109,9 +109,9 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 
 .eye {
   position: relative;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
+  width: 18px;
+  height: 26px;
+  border-radius: 999px;
   background: #111111;
   border: 1.5px solid rgba(17, 17, 17, 0.9);
   overflow: hidden;
