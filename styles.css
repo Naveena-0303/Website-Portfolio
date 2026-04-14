@@ -89,9 +89,9 @@ a {
 .site-nav a:hover,
 .site-nav a:focus-visible,
 body[data-page="home"] .site-nav a[href="/"],
-body[data-page="work"] .site-nav a[href="/work"],
-body[data-page="profile"] .site-nav a[href="/profile"],
-body[data-page="feedback"] .site-nav a[href="/feedback"] {
+body[data-page="work"] .site-nav a[href="/work/"],
+body[data-page="profile"] .site-nav a[href="/profile/"],
+body[data-page="feedback"] .site-nav a[href="/feedback/"] {
   background: rgba(17, 17, 17, 0.08);
   color: #000000;
 }
