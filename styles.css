@@ -673,15 +673,15 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 .footer-right {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0;
 }
 
 .footer-social {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.3rem;
-  height: 2.3rem;
+  width: 80px;
+  height: 80px;
   border-radius: 999px;
   border: 0;
   background: #ffffff;
@@ -699,8 +699,8 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 
 .footer-social-icon {
   display: block;
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
 }
 
@@ -942,8 +942,8 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   }
 
   .footer-social {
-    width: 2.15rem;
-    height: 2.15rem;
+    width: 65px;
+    height: 65px;
   }
 
   .subpage-card {
