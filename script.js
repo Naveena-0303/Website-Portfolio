@@ -8,10 +8,10 @@ function markActiveNav() {
   navLinks.forEach((link) => {
     const href = link.getAttribute("href");
     const isActive =
-      (currentPage === "home" && href === "index.html") ||
-      (currentPage === "work" && href === "work.html") ||
-      (currentPage === "profile" && href === "profile.html") ||
-      (currentPage === "feedback" && href === "feedback.html");
+      (currentPage === "home" && href === "/") ||
+      (currentPage === "work" && href === "/work") ||
+      (currentPage === "profile" && href === "/profile") ||
+      (currentPage === "feedback" && href === "/feedback");
 
     if (isActive) {
       link.setAttribute("aria-current", "page");
@@ -166,7 +166,7 @@ async function renderWorkPage() {
         : createProjectPlaceholder(project);
 
       return `
-        <a class="project-card" href="project.html?slug=${encodeURIComponent(project.slug)}">
+        <a class="project-card" href="/project?slug=${encodeURIComponent(project.slug)}">
           <div class="project-card-topline">${escapeHtml(project.category)}</div>
           <h2 class="project-card-title">${escapeHtml(project.title)}</h2>
           <p class="project-card-subtitle">${escapeHtml(project.subtitle)}</p>

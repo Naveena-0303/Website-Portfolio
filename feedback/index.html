@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Naveena Sivakumar | Home</title>
+    <title>Naveena Sivakumar | Feedback</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body data-page="home">
+  <body data-page="feedback">
     <header class="site-header">
       <a class="logo-link" href="/" aria-label="Go to home page">
         <img src="/Assets/Logo.png" alt="Naveena Sivakumar logo" class="site-logo" />
@@ -32,31 +32,45 @@
       </div>
     </header>
 
-    <main>
-      <section class="hero" aria-label="Home hero section">
-        <div class="hero-video-shell">
-          <video
-            class="hero-video"
-            src="/Assets/Hero-Video_1.mp4"
-            autoplay
-            muted
-            loop
-            playsinline
-          ></video>
-        </div>
-
-        <div class="hero-overlay" aria-hidden="true">
-          <p class="hero-feed">Feed ↓</p>
-          <p class="hero-year">2026</p>
-          <h1 class="hero-title">Portfolio</h1>
-        </div>
-      </section>
-
-      <section class="feedback-cta-section" aria-label="Feedback invitation">
-        <p class="feedback-cta-text">
-          Have something to say ?
-          <a class="feedback-cta-link" href="/feedback">Leave a Feedback &gt;</a>
+    <main class="feedback-main">
+      <section class="feedback-section">
+        <p class="feedback-kicker">Feedback</p>
+        <h1 class="feedback-heading">Feedback</h1>
+        <p class="feedback-subheading">
+          Feel free to leave a note, share your thoughts, or tell me what stood out to you.
         </p>
+
+        <form
+          class="feedback-form"
+          action="https://formspree.io/f/mbdqljyj"
+          method="POST"
+        >
+          <label class="feedback-field">
+            <span>Your Name</span>
+            <input type="text" name="name" placeholder="Enter your name" />
+          </label>
+
+          <label class="feedback-field">
+            <span>Mail / Mobile Number</span>
+            <input type="text" name="contact" placeholder="Enter your email or phone number" />
+          </label>
+
+          <label class="feedback-field feedback-field-full">
+            <span>Feedback</span>
+            <textarea
+              name="feedback"
+              rows="8"
+              placeholder="Write your feedback here"
+            ></textarea>
+          </label>
+
+          <input type="hidden" name="_subject" value="New portfolio feedback submission" />
+          <input type="hidden" name="_format" value="plain" />
+
+          <div class="feedback-actions">
+            <button class="feedback-submit" type="submit">Submit Feedback</button>
+          </div>
+        </form>
       </section>
     </main>
 

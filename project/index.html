@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Naveena Sivakumar | Home</title>
+    <title>Naveena Sivakumar | Project</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body data-page="home">
+  <body data-page="work" class="project-page">
     <header class="site-header">
       <a class="logo-link" href="/" aria-label="Go to home page">
         <img src="/Assets/Logo.png" alt="Naveena Sivakumar logo" class="site-logo" />
@@ -32,32 +32,22 @@
       </div>
     </header>
 
-    <main>
-      <section class="hero" aria-label="Home hero section">
-        <div class="hero-video-shell">
-          <video
-            class="hero-video"
-            src="/Assets/Hero-Video_1.mp4"
-            autoplay
-            muted
-            loop
-            playsinline
-          ></video>
+    <main class="project-main">
+      <section class="project-intro" aria-label="Project overview">
+        <div class="project-intro-left">
+          <p class="project-label" id="project-category">Project</p>
+          <h1 class="project-title" id="project-title">Project Title</h1>
+          <p class="project-subtitle" id="project-subtitle">Project Subtitle</p>
         </div>
 
-        <div class="hero-overlay" aria-hidden="true">
-          <p class="hero-feed">Feed ↓</p>
-          <p class="hero-year">2026</p>
-          <h1 class="hero-title">Portfolio</h1>
+        <div class="project-intro-right">
+          <p class="project-description" id="project-description">
+            A short description will appear here once a project is selected.
+          </p>
         </div>
       </section>
 
-      <section class="feedback-cta-section" aria-label="Feedback invitation">
-        <p class="feedback-cta-text">
-          Have something to say ?
-          <a class="feedback-cta-link" href="/feedback">Leave a Feedback &gt;</a>
-        </p>
-      </section>
+      <section class="project-media-stream" id="project-media-stream" aria-label="Project media"></section>
     </main>
 
     <footer class="site-footer">
@@ -89,6 +79,7 @@
       </div>
     </footer>
 
+    <script src="/projects-data.js"></script>
     <script src="/script.js"></script>
   </body>
 </html>

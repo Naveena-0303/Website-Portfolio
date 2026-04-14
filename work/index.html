@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Naveena Sivakumar | Home</title>
+    <title>Naveena Sivakumar | Work</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body data-page="home">
+  <body data-page="work" class="work-page">
     <header class="site-header">
       <a class="logo-link" href="/" aria-label="Go to home page">
         <img src="/Assets/Logo.png" alt="Naveena Sivakumar logo" class="site-logo" />
@@ -32,30 +32,20 @@
       </div>
     </header>
 
-    <main>
-      <section class="hero" aria-label="Home hero section">
-        <div class="hero-video-shell">
-          <video
-            class="hero-video"
-            src="/Assets/Hero-Video_1.mp4"
-            autoplay
-            muted
-            loop
-            playsinline
-          ></video>
-        </div>
-
-        <div class="hero-overlay" aria-hidden="true">
-          <p class="hero-feed">Feed ↓</p>
-          <p class="hero-year">2026</p>
-          <h1 class="hero-title">Portfolio</h1>
-        </div>
+    <main class="work-main">
+      <section class="work-hero" aria-label="Selected work">
+        <h1 class="work-heading">Work</h1>
+        <p class="work-count" id="project-count">00</p>
       </section>
+
+      <section class="work-grid" id="work-grid" aria-label="Project list"></section>
 
       <section class="feedback-cta-section" aria-label="Feedback invitation">
         <p class="feedback-cta-text">
           Have something to say ?
-          <a class="feedback-cta-link" href="/feedback">Leave a Feedback &gt;</a>
+          <a class="feedback-cta-link" href="/feedback">
+            Leave a Feedback &gt;
+          </a>
         </p>
       </section>
     </main>
@@ -89,6 +79,7 @@
       </div>
     </footer>
 
+    <script src="/projects-data.js"></script>
     <script src="/script.js"></script>
   </body>
 </html>

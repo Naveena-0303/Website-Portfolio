@@ -88,10 +88,10 @@ a {
 
 .site-nav a:hover,
 .site-nav a:focus-visible,
-body[data-page="home"] .site-nav a[href="index.html"],
-body[data-page="work"] .site-nav a[href="work.html"],
-body[data-page="profile"] .site-nav a[href="profile.html"],
-body[data-page="feedback"] .site-nav a[href="feedback.html"] {
+body[data-page="home"] .site-nav a[href="/"],
+body[data-page="work"] .site-nav a[href="/work"],
+body[data-page="profile"] .site-nav a[href="/profile"],
+body[data-page="feedback"] .site-nav a[href="/feedback"] {
   background: rgba(17, 17, 17, 0.08);
   color: #000000;
 }
