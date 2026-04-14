@@ -190,7 +190,11 @@ async function renderProjectDetailPage() {
   document.title = `Naveena Sivakumar | ${project.title}`;
   document.querySelector("#project-category").textContent = project.category;
   document.querySelector("#project-title").textContent = project.title;
-  document.querySelector("#project-description").textContent = project.description;
+  if (project.description) {
+    document.querySelector("#project-description").textContent = project.description;
+  } else {
+    document.querySelector("#project-description").textContent = "";
+  }
 
   const media = await resolveProjectMedia(project.folder);
 

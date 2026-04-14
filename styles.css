@@ -234,7 +234,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 
 .work-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 4rem 1rem;
 }
 
@@ -266,7 +266,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 
 .project-cover,
 .project-cover-placeholder {
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #efe9df;
 }
