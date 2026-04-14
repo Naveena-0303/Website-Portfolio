@@ -139,14 +139,12 @@ async function resolveProjectMedia(folder, maxItems = 30) {
 
 async function renderWorkPage() {
   const grid = document.querySelector("#work-grid");
-  const count = document.querySelector("#project-count");
 
   if (!grid || !Array.isArray(window.PROJECTS || PROJECTS)) {
     return;
   }
 
   const projects = window.PROJECTS || PROJECTS;
-  count.textContent = String(projects.length).padStart(2, "0");
 
   const cards = await Promise.all(
     projects.map(async (project) => {
@@ -169,7 +167,6 @@ async function renderWorkPage() {
         <a class="project-card" href="project.html?slug=${encodeURIComponent(project.slug)}">
           <div class="project-card-topline">${escapeHtml(project.category)}</div>
           <h2 class="project-card-title">${escapeHtml(project.title)}</h2>
-          <p class="project-card-subtitle">${escapeHtml(project.subtitle)}</p>
           ${coverMarkup}
         </a>
       `;
@@ -193,7 +190,6 @@ async function renderProjectDetailPage() {
   document.title = `Naveena Sivakumar | ${project.title}`;
   document.querySelector("#project-category").textContent = project.category;
   document.querySelector("#project-title").textContent = project.title;
-  document.querySelector("#project-subtitle").textContent = project.subtitle;
   document.querySelector("#project-description").textContent = project.description;
 
   const media = await resolveProjectMedia(project.folder);
