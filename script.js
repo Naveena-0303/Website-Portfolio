@@ -272,14 +272,18 @@ function extensionCandidates(extension) {
 }
 
 async function resolveProjectCover(folder) {
+  const coverBaseNames = ["cover", "Cover"];
+
   for (const extension of SUPPORTED_MEDIA_EXTENSIONS) {
     for (const variant of extensionCandidates(extension)) {
-      const url = `${folder}/cover.${variant}`;
-      const type = extension === "mp4" ? "video" : "image";
-      const exists = await probeMediaCandidate(url, type);
+      for (const baseName of coverBaseNames) {
+        const url = `${folder}/${baseName}.${variant}`;
+        const type = extension === "mp4" ? "video" : "image";
+        const exists = await probeMediaCandidate(url, type);
 
-      if (exists) {
-        return { url, type };
+        if (exists) {
+          return { url, type };
+        }
       }
     }
   }
