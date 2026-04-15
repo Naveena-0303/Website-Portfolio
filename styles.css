@@ -681,7 +681,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 }
 
 .profile-main {
-  padding: 2rem 2rem 5rem;
+  padding: 2rem 2rem 2.2rem;
 }
 
 .profile-hero {
@@ -975,7 +975,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   grid-template-columns: 1fr auto;
   gap: 2rem;
   align-items: end;
-  padding: 1.6rem 0 2rem;
+  padding: 1.6rem 0;
   min-height: auto;
 }
 
@@ -1128,7 +1128,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   }
 
   .profile-main {
-    padding: 1.4rem 1.2rem 4rem;
+    padding: 1.4rem 1.2rem 2.2rem;
   }
 
   .home-top-projects {
@@ -1207,7 +1207,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
     grid-template-columns: 1fr;
     gap: 1.5rem;
     min-height: auto;
-    padding-top: 1.25rem;
+    padding: 1.25rem 0;
   }
 
   .profile-resume-section {
@@ -1307,7 +1307,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   }
 
   .profile-main {
-    padding: 1rem 1rem 3rem;
+    padding: 1rem 1rem 2rem;
   }
 
   .home-top-projects {
