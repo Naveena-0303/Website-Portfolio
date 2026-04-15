@@ -42,6 +42,189 @@ function resetPupils() {
   });
 }
 
+function initTopProjectsSwipe() {
+  const stack = document.querySelector(".top-projects-stack");
+  const prevButton = document.querySelector(".top-projects-arrow-prev");
+  const nextButton = document.querySelector(".top-projects-arrow-next");
+  const dots = Array.from(document.querySelectorAll(".top-projects-dot"));
+
+  if (!stack) {
+    return;
+  }
+
+  const cards = Array.from(stack.querySelectorAll(".top-project-card"));
+
+  if (cards.length < 3) {
+    return;
+  }
+
+  const findByPosition = (positionClass) =>
+    cards.findIndex((card) => card.classList.contains(`top-project-card-${positionClass}`));
+
+  const leftIndex = findByPosition("left");
+  const centerIndex = findByPosition("center");
+  const rightIndex = findByPosition("right");
+
+  if (leftIndex < 0 || centerIndex < 0 || rightIndex < 0) {
+    return;
+  }
+
+  let order = [leftIndex, centerIndex, rightIndex];
+  let startX = 0;
+  let startY = 0;
+  let tracking = false;
+  let didSwipe = false;
+
+  const updateDots = () => {
+    if (!dots.length) {
+      return;
+    }
+
+    dots.forEach((dot, index) => {
+      const isActive = order[1] === index;
+      dot.classList.toggle("is-active", isActive);
+      if (isActive) {
+        dot.setAttribute("aria-current", "true");
+      } else {
+        dot.removeAttribute("aria-current");
+      }
+    });
+  };
+
+  const applyOrder = () => {
+    cards.forEach((card) => {
+      card.classList.remove(
+        "top-project-card-left",
+        "top-project-card-center",
+        "top-project-card-right"
+      );
+    });
+
+    cards[order[0]].classList.add("top-project-card-left");
+    cards[order[1]].classList.add("top-project-card-center");
+    cards[order[2]].classList.add("top-project-card-right");
+    updateDots();
+  };
+
+  const goNext = () => {
+    order = [order[1], order[2], order[0]];
+    applyOrder();
+  };
+
+  const goPrev = () => {
+    order = [order[2], order[0], order[1]];
+    applyOrder();
+  };
+
+  stack.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) {
+      return;
+    }
+
+    tracking = true;
+    didSwipe = false;
+    startX = event.clientX;
+    startY = event.clientY;
+  });
+
+  stack.addEventListener("pointerup", (event) => {
+    if (!tracking) {
+      return;
+    }
+
+    const deltaX = event.clientX - startX;
+    const deltaY = event.clientY - startY;
+    const horizontalSwipe = Math.abs(deltaX) > 42 && Math.abs(deltaX) > Math.abs(deltaY);
+
+    if (horizontalSwipe) {
+      didSwipe = true;
+      if (deltaX < 0) {
+        goNext();
+      } else {
+        goPrev();
+      }
+    }
+
+    tracking = false;
+  });
+
+  stack.addEventListener("pointercancel", () => {
+    tracking = false;
+  });
+
+  if (prevButton) {
+    prevButton.addEventListener("click", () => {
+      goPrev();
+    });
+  }
+
+  if (nextButton) {
+    nextButton.addEventListener("click", () => {
+      goNext();
+    });
+  }
+
+  dots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      const targetIndex = Number(dot.dataset.cardIndex);
+
+      if (Number.isNaN(targetIndex) || targetIndex === order[1]) {
+        return;
+      }
+
+      if (targetIndex === order[2]) {
+        goNext();
+      } else if (targetIndex === order[0]) {
+        goPrev();
+      }
+    });
+  });
+
+  // Prevent accidental navigation clicks right after a swipe gesture.
+  stack.addEventListener(
+    "click",
+    (event) => {
+      if (didSwipe) {
+        event.preventDefault();
+        event.stopPropagation();
+        didSwipe = false;
+      }
+    },
+    true
+  );
+
+  updateDots();
+}
+
+function animateSkillsBarsOnScroll() {
+  const skillsPanel = document.querySelector(".skills-panel");
+
+  if (!skillsPanel) {
+    return;
+  }
+
+  if (!("IntersectionObserver" in window)) {
+    skillsPanel.classList.add("is-loaded");
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          skillsPanel.classList.add("is-loaded");
+          observer.disconnect();
+        }
+      });
+    },
+    {
+      threshold: 0.35,
+    }
+  );
+
+  observer.observe(skillsPanel);
+}
+
 function escapeHtml(value) {
   return value
     .replaceAll("&", "&amp;")
@@ -104,7 +287,7 @@ async function resolveProjectCover(folder) {
   return null;
 }
 
-async function resolveProjectMedia(folder, maxItems = 30) {
+async function resolveProjectMedia(folder, maxItems = 60) {
   const media = [];
 
   for (let index = 1; index <= maxItems; index += 1) {
@@ -230,5 +413,7 @@ async function renderProjectDetailPage() {
 markActiveNav();
 window.addEventListener("pointermove", movePupils);
 window.addEventListener("pointerleave", resetPupils);
+animateSkillsBarsOnScroll();
+initTopProjectsSwipe();
 renderWorkPage();
 renderProjectDetailPage();
