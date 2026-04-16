@@ -354,7 +354,6 @@ async function renderWorkPage() {
         <a class="project-card" href="project.html?slug=${encodeURIComponent(project.slug)}">
           <div class="project-card-topline">${escapeHtml(project.category)}</div>
           <h2 class="project-card-title">${escapeHtml(project.title)}</h2>
-          <p class="project-card-subtitle">${escapeHtml(project.subtitle || "")}</p>
           ${coverMarkup}
         </a>
       `;
