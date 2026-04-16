@@ -326,7 +326,6 @@ async function resolveProjectMedia(folder, maxItems = 60) {
 
 async function renderWorkPage() {
   const grid = document.querySelector("#work-grid");
-  const workCount = document.querySelector("#work-count");
 
   if (!grid || !Array.isArray(window.PROJECTS || PROJECTS)) {
     return;
@@ -363,10 +362,6 @@ async function renderWorkPage() {
   );
 
   grid.innerHTML = cards.join("");
-
-  if (workCount) {
-    workCount.textContent = String(projects.length).padStart(2, "0");
-  }
 }
 
 async function renderProjectDetailPage() {
