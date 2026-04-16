@@ -37,8 +37,8 @@ const PROJECTS = [
   {
     slug: "badaga",
     title: "Badaga",
-    subtitle: "Visual Story Telling",
-    category: "Visual Story Telling",
+    subtitle: "Visual Storytelling",
+    category: "Visual Storytelling",
     folder: "Projects/Badaga"
   }
 ];

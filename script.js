@@ -326,6 +326,7 @@ async function resolveProjectMedia(folder, maxItems = 60) {
 
 async function renderWorkPage() {
   const grid = document.querySelector("#work-grid");
+  const workCount = document.querySelector("#work-count");
 
   if (!grid || !Array.isArray(window.PROJECTS || PROJECTS)) {
     return;
@@ -354,6 +355,7 @@ async function renderWorkPage() {
         <a class="project-card" href="project.html?slug=${encodeURIComponent(project.slug)}">
           <div class="project-card-topline">${escapeHtml(project.category)}</div>
           <h2 class="project-card-title">${escapeHtml(project.title)}</h2>
+          <p class="project-card-subtitle">${escapeHtml(project.subtitle || "")}</p>
           ${coverMarkup}
         </a>
       `;
@@ -361,6 +363,10 @@ async function renderWorkPage() {
   );
 
   grid.innerHTML = cards.join("");
+
+  if (workCount) {
+    workCount.textContent = String(projects.length).padStart(2, "0");
+  }
 }
 
 async function renderProjectDetailPage() {
