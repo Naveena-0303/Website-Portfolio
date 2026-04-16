@@ -1,5 +1,6 @@
 const eyes = document.querySelectorAll(".eye");
 const SUPPORTED_MEDIA_EXTENSIONS = ["jpg", "jpeg", "gif", "mp4"];
+const MEDIA_PROBE_CACHE = new Map();
 const WORK_FILTERS = {
   all: [],
   "case-studies": [
@@ -264,7 +265,11 @@ function createProjectPlaceholder(project) {
 }
 
 function probeMediaCandidate(url, type) {
-  return new Promise((resolve) => {
+  if (MEDIA_PROBE_CACHE.has(url)) {
+    return MEDIA_PROBE_CACHE.get(url);
+  }
+
+  const probePromise = new Promise((resolve) => {
     if (type === "video") {
       const video = document.createElement("video");
       video.preload = "metadata";
@@ -279,6 +284,9 @@ function probeMediaCandidate(url, type) {
     image.onerror = () => resolve(false);
     image.src = url;
   });
+
+  MEDIA_PROBE_CACHE.set(url, probePromise);
+  return probePromise;
 }
 
 function extensionCandidates(extension) {
@@ -290,6 +298,10 @@ function normalizeProjectTitle(value) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
+}
+
+function getMediaTypeFromUrl(url) {
+  return url.toLowerCase().endsWith(".mp4") ? "video" : "image";
 }
 
 async function resolveProjectCover(folder) {
@@ -371,18 +383,19 @@ async function renderWorkPage() {
 
     const cards = await Promise.all(
       filteredProjects.map(async (project) => {
-        const cover =
-          (await resolveProjectCover(project.folder)) || (await resolveProjectMedia(project.folder, 1))[0];
+        const cover = project.cover
+          ? { url: project.cover, type: getMediaTypeFromUrl(project.cover) }
+          : await resolveProjectCover(project.folder);
         const coverMarkup = cover
           ? cover.type === "video"
             ? `
             <div class="project-cover">
-              <video class="project-cover-media" src="${cover.url}" autoplay muted loop playsinline></video>
+              <video class="project-cover-media" src="${cover.url}" muted playsinline preload="metadata"></video>
             </div>
           `
             : `
             <div class="project-cover">
-              <img class="project-cover-media" src="${cover.url}" alt="${escapeHtml(project.title)} cover image" />
+              <img class="project-cover-media" src="${cover.url}" alt="${escapeHtml(project.title)} cover image" loading="lazy" decoding="async" />
             </div>
           `
           : createProjectPlaceholder(project);
@@ -459,14 +472,14 @@ async function renderProjectDetailPage() {
       if (item.type === "video") {
         return `
           <figure class="project-media-frame">
-            <video class="project-media" src="${item.url}" controls autoplay muted loop playsinline></video>
+            <video class="project-media" src="${item.url}" controls playsinline preload="metadata"></video>
           </figure>
         `;
       }
 
       return `
         <figure class="project-media-frame">
-          <img class="project-media" src="${item.url}" alt="" />
+          <img class="project-media" src="${item.url}" alt="" loading="lazy" decoding="async" />
         </figure>
       `;
     })
