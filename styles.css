@@ -247,6 +247,36 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   cursor: grabbing;
 }
 
+.home-view-all-wrap {
+  margin-top: 1.7rem;
+  display: flex;
+  justify-content: center;
+}
+
+.home-view-all-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.82rem 1.35rem;
+  border-radius: 999px;
+  border: 1.5px solid #111111;
+  background: transparent;
+  color: #111111;
+  font-size: 0.94rem;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.home-view-all-button:hover,
+.home-view-all-button:focus-visible {
+  transform: translateY(-1px);
+  background: rgba(17, 17, 17, 0.06);
+  border-color: #111111;
+}
+
 .top-project-card {
   position: absolute;
   top: 50%;
@@ -305,7 +335,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 }
 
 .top-projects-controls {
-  margin-top: 1.35rem;
+  margin-top: 0.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -364,10 +394,10 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 }
 
 .work-hero {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: start;
-  gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.2rem;
   padding: 2rem 0 5rem;
 }
 
@@ -377,6 +407,39 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   line-height: 0.9;
   letter-spacing: -0.08em;
   font-weight: 500;
+}
+
+.work-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.work-filter-button {
+  padding: 0.62rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 17, 17, 0.16);
+  background: #ffffff;
+  color: #111111;
+  font-size: 0.93rem;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.work-filter-button:hover,
+.work-filter-button:focus-visible {
+  transform: translateY(-1px);
+  border-color: #111111;
+}
+
+.work-filter-button.is-active {
+  background: #111111;
+  color: #ffffff;
+  border-color: #111111;
 }
 
 .work-count {
@@ -1396,9 +1459,17 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   }
 
   .work-hero {
-    grid-template-columns: 1fr;
     gap: 0.5rem;
     padding-bottom: 2.5rem;
+  }
+
+  .work-filters {
+    gap: 0.5rem;
+  }
+
+  .work-filter-button {
+    font-size: 0.88rem;
+    padding: 0.55rem 0.86rem;
   }
 
   .work-grid {

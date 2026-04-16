@@ -1,5 +1,19 @@
 const eyes = document.querySelectorAll(".eye");
 const SUPPORTED_MEDIA_EXTENSIONS = ["jpg", "jpeg", "gif", "mp4"];
+const WORK_FILTERS = {
+  all: [],
+  "case-studies": [
+    "Awara",
+    "Koo App Revamp",
+    "Recreation to Relaxation",
+    "Mira - Travel System for the Elderly",
+  ],
+  "experience-design": [
+    "Mira - Travel System for the Elderly",
+    "Recreation to Relaxation",
+  ],
+  "visual-design": ["Badaga", "Wrapped Realities"],
+};
 
 function markActiveNav() {
   const currentPage = document.body.dataset.page;
@@ -271,6 +285,13 @@ function extensionCandidates(extension) {
   return Array.from(new Set([extension, extension.toUpperCase()]));
 }
 
+function normalizeProjectTitle(value) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
 async function resolveProjectCover(folder) {
   const coverBaseNames = ["cover", "Cover"];
 
@@ -326,41 +347,79 @@ async function resolveProjectMedia(folder, maxItems = 60) {
 
 async function renderWorkPage() {
   const grid = document.querySelector("#work-grid");
+  const filtersContainer = document.querySelector("#work-filters");
 
   if (!grid || !Array.isArray(window.PROJECTS || PROJECTS)) {
     return;
   }
 
   const projects = window.PROJECTS || PROJECTS;
+  let activeFilter = "all";
 
-  const cards = await Promise.all(
-    projects.map(async (project) => {
-      const cover = (await resolveProjectCover(project.folder)) || (await resolveProjectMedia(project.folder, 1))[0];
-      const coverMarkup = cover
-        ? cover.type === "video"
-          ? `
+  const renderProjects = async (filterKey) => {
+    const allowedTitles = WORK_FILTERS[filterKey] || [];
+    const allowedTitleSet = new Set(allowedTitles.map((title) => normalizeProjectTitle(title)));
+    const filteredProjects =
+      filterKey === "all"
+        ? projects
+        : projects.filter((project) => allowedTitleSet.has(normalizeProjectTitle(project.title)));
+
+    if (!filteredProjects.length) {
+      grid.innerHTML = "";
+      return;
+    }
+
+    const cards = await Promise.all(
+      filteredProjects.map(async (project) => {
+        const cover =
+          (await resolveProjectCover(project.folder)) || (await resolveProjectMedia(project.folder, 1))[0];
+        const coverMarkup = cover
+          ? cover.type === "video"
+            ? `
             <div class="project-cover">
               <video class="project-cover-media" src="${cover.url}" autoplay muted loop playsinline></video>
             </div>
           `
-          : `
+            : `
             <div class="project-cover">
               <img class="project-cover-media" src="${cover.url}" alt="${escapeHtml(project.title)} cover image" />
             </div>
           `
-        : createProjectPlaceholder(project);
+          : createProjectPlaceholder(project);
 
-      return `
+        return `
         <a class="project-card" href="project.html?slug=${encodeURIComponent(project.slug)}">
           <div class="project-card-topline">${escapeHtml(project.category)}</div>
           <h2 class="project-card-title">${escapeHtml(project.title)}</h2>
           ${coverMarkup}
         </a>
       `;
-    })
-  );
+      })
+    );
 
-  grid.innerHTML = cards.join("");
+    grid.innerHTML = cards.join("");
+  };
+
+  if (filtersContainer) {
+    const filterButtons = Array.from(filtersContainer.querySelectorAll(".work-filter-button"));
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const filterKey = button.dataset.filter;
+
+        if (!filterKey || filterKey === activeFilter) {
+          return;
+        }
+
+        activeFilter = filterKey;
+        filterButtons.forEach((item) => item.classList.remove("is-active"));
+        button.classList.add("is-active");
+        renderProjects(activeFilter);
+      });
+    });
+  }
+
+  await renderProjects(activeFilter);
 }
 
 async function renderProjectDetailPage() {
