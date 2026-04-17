@@ -475,6 +475,9 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   line-height: 1.02;
   font-weight: 500;
   color: #111111;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .project-card-subtitle {

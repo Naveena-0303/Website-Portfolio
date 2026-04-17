@@ -366,7 +366,7 @@ async function renderWorkPage() {
   }
 
   const projects = window.PROJECTS || PROJECTS;
-  let activeFilter = "all";
+  let activeFilter = "case-studies";
 
   const renderProjects = async (filterKey) => {
     const allowedTitles = WORK_FILTERS[filterKey] || [];
