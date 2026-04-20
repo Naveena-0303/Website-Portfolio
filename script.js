@@ -334,7 +334,17 @@ async function resolveProjectCover(folder) {
   return null;
 }
 
-async function resolveProjectMedia(folder, maxItems = 25) {
+async function resolveProjectMedia(project, maxItems = 25) {
+  // Fast path: use media list from projects-data.js if available
+  if (project.media && Array.isArray(project.media) && project.media.length > 0) {
+    return project.media.map((url) => ({
+      url,
+      type: getMediaTypeFromUrl(url),
+    }));
+  }
+
+  // Fallback: probe for media files (slower)
+  const folder = project.folder;
   const media = [];
   let consecutiveMisses = 0;
   const maxConsecutiveMisses = 2;
@@ -483,12 +493,12 @@ async function renderProjectDetailPage() {
   // Show loading state while resolving media
   stream.innerHTML = '<div class="project-loading">Loading project...</div>';
 
-  const media = await resolveProjectMedia(project.folder);
+  const media = await resolveProjectMedia(project);
 
   if (!media.length) {
     stream.innerHTML = `
       <div class="project-empty-state">
-        Add files like <code>01.jpg</code>, <code>02.jpeg</code>, <code>03.gif</code>, or <code>04.mp4</code>
+        Add media files to the <code>media</code> array in <code>projects-data.js</code> for instant loading, or add files like <code>01.jpg</code>, <code>02.jpeg</code>, <code>03.gif</code>, or <code>04.mp4</code>
         inside <code>${escapeHtml(project.folder)}</code> and they will appear here automatically.
       </div>
     `;
