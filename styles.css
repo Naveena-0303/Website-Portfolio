@@ -541,9 +541,6 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   letter-spacing: -0.08em;
   font-weight: 500;
   color: #111111;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .project-subtitle {
@@ -590,6 +587,44 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 .project-empty-state code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   color: #111111;
+}
+
+.project-loading {
+  padding: 3rem 2rem;
+  text-align: center;
+  color: rgba(17, 17, 17, 0.6);
+  font-size: 1.1rem;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.project-loading::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 0.5rem;
+  border-radius: 50%;
+  background: rgba(17, 17, 17, 0.6);
+  animation: loading 1.4s ease-in-out infinite;
+  vertical-align: middle;
+}
+
+@keyframes loading {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .subpage-main {

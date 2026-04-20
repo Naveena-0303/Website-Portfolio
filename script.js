@@ -289,10 +289,6 @@ function probeMediaCandidate(url, type) {
   return probePromise;
 }
 
-function extensionCandidates(extension) {
-  return Array.from(new Set([extension, extension.toUpperCase()]));
-}
-
 function normalizeProjectTitle(value) {
   return value
     .toLowerCase()
@@ -304,57 +300,83 @@ function getMediaTypeFromUrl(url) {
   return url.toLowerCase().endsWith(".mp4") ? "video" : "image";
 }
 
+// Optimized: Check multiple extensions in parallel for faster detection
+async function checkMediaVariants(folder, baseName) {
+  const variants = [
+    { ext: "jpg", type: "image" },
+    { ext: "mp4", type: "video" },
+    { ext: "gif", type: "image" },
+    { ext: "jpeg", type: "image" },
+    { ext: "JPG", type: "image" },
+    { ext: "MP4", type: "video" },
+  ];
+
+  const probes = variants.map(({ ext, type }) => {
+    const url = `${folder}/${baseName}.${ext}`;
+    return probeMediaCandidate(url, type)
+      .then((exists) => (exists ? { url, type } : null));
+  });
+
+  const results = await Promise.all(probes);
+  return results.find((r) => r !== null);
+}
+
 async function resolveProjectCover(folder) {
   const coverBaseNames = ["cover", "Cover"];
 
-  for (const extension of SUPPORTED_MEDIA_EXTENSIONS) {
-    for (const variant of extensionCandidates(extension)) {
-      for (const baseName of coverBaseNames) {
-        const url = `${folder}/${baseName}.${variant}`;
-        const type = extension === "mp4" ? "video" : "image";
-        const exists = await probeMediaCandidate(url, type);
-
-        if (exists) {
-          return { url, type };
-        }
-      }
+  for (const baseName of coverBaseNames) {
+    const result = await checkMediaVariants(folder, baseName);
+    if (result) {
+      return result;
     }
   }
 
   return null;
 }
 
-async function resolveProjectMedia(folder, maxItems = 60) {
+async function resolveProjectMedia(folder, maxItems = 25) {
   const media = [];
+  let consecutiveMisses = 0;
+  const maxConsecutiveMisses = 2;
 
   for (let index = 1; index <= maxItems; index += 1) {
     const padded = String(index).padStart(2, "0");
-    let found = false;
+    const result = await checkMediaVariants(folder, padded);
 
-    for (const extension of SUPPORTED_MEDIA_EXTENSIONS) {
-      for (const variant of extensionCandidates(extension)) {
-        const url = `${folder}/${padded}.${variant}`;
-        const type = extension === "mp4" ? "video" : "image";
-        const exists = await probeMediaCandidate(url, type);
-
-        if (exists) {
-          media.push({ url, type });
-          found = true;
-          break;
-        }
-      }
-
-      if (found) {
+    if (result) {
+      media.push(result);
+      consecutiveMisses = 0;
+    } else {
+      consecutiveMisses += 1;
+      if (consecutiveMisses >= maxConsecutiveMisses) {
         break;
       }
-    }
-
-    if (!found && index > 3) {
-      break;
     }
   }
 
   return media;
+}
+
+// Limit concurrent async operations to avoid network flooding
+async function promiseQueue(items, asyncFn, concurrency = 3) {
+  const results = [];
+  const executing = [];
+
+  for (const item of items) {
+    const promise = Promise.resolve().then(() => asyncFn(item)).then((result) => {
+      executing.splice(executing.indexOf(promise), 1);
+      return result;
+    });
+
+    results.push(promise);
+    executing.push(promise);
+
+    if (executing.length >= concurrency) {
+      await Promise.race(executing);
+    }
+  }
+
+  return Promise.all(results);
 }
 
 async function renderWorkPage() {
@@ -381,8 +403,10 @@ async function renderWorkPage() {
       return;
     }
 
-    const cards = await Promise.all(
-      filteredProjects.map(async (project) => {
+    // Limit concurrent cover resolution to avoid network flooding
+    const cards = await promiseQueue(
+      filteredProjects,
+      async (project) => {
         const cover = project.cover
           ? { url: project.cover, type: getMediaTypeFromUrl(project.cover) }
           : await resolveProjectCover(project.folder);
@@ -407,7 +431,8 @@ async function renderWorkPage() {
           ${coverMarkup}
         </a>
       `;
-      })
+      },
+      3
     );
 
     grid.innerHTML = cards.join("");
@@ -454,6 +479,9 @@ async function renderProjectDetailPage() {
   } else {
     document.querySelector("#project-description").textContent = "";
   }
+
+  // Show loading state while resolving media
+  stream.innerHTML = '<div class="project-loading">Loading project...</div>';
 
   const media = await resolveProjectMedia(project.folder);
 
