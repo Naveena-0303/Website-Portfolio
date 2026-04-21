@@ -34,7 +34,7 @@ a {
   top: 0;
   z-index: 10;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 1rem;
   padding: 0.45rem 1.6rem;
@@ -290,6 +290,8 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 }
 
 .home-view-all-wrap {
+  position: relative;
+  top: -100px;
   margin-top: 1.7rem;
   display: flex;
   justify-content: center;
@@ -321,7 +323,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 
 .top-project-card {
   position: absolute;
-  top: 50%;
+  top: calc(50% - 60px);
   left: 50%;
   width: clamp(240px, 62vw, 520px);
   aspect-ratio: 16 / 9;
@@ -377,6 +379,8 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 }
 
 .top-projects-controls {
+  position: relative;
+  top: -100px;
   margin-top: 0.8rem;
   display: flex;
   align-items: center;
@@ -564,6 +568,10 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   text-overflow: ellipsis;
 }
 
+.work-grid .project-card-title {
+  font-size: clamp(1.3rem, 1.9vw, 1.8rem);
+}
+
 .project-card-subtitle {
   margin: 0 0 1rem;
   font-size: 1rem;
@@ -575,6 +583,11 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #efe9df;
+}
+
+.work-grid .project-cover,
+.work-grid .project-cover-placeholder {
+  aspect-ratio: 16 / 7;
 }
 
 .project-cover-media {
@@ -948,26 +961,27 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 
 .profile-name {
   margin: 0 0 0.75rem;
-  font-size: 40px;
+  font-size: 32px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 600;
-  color: rgba(17, 17, 17, 0.46);
+  color: rgba(17, 17, 17, 0.72);
 }
 
 .profile-role {
   margin: 0 0 1.3rem;
   font-family: var(--font-sans);
-  font-size: 40px;
-  line-height: 1.45;
+  font-size: 32px;
+  line-height: 1.2;
   letter-spacing: 0;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .profile-description {
   max-width: 38rem;
   margin: 0 0 1.1rem;
-  font-size: 1.08rem;
+  font-size: 14px;
   line-height: 1.8;
   color: rgba(17, 17, 17, 0.78);
 }
@@ -982,12 +996,12 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.92rem 1.45rem;
+  padding: 0.68rem 1.05rem;
   border-radius: 999px;
   border: 1px solid rgba(17, 17, 17, 0.12);
   background: #111111;
   color: #ffffff;
-  font-size: 0.98rem;
+  font-size: 0.86rem;
   transition:
     transform 180ms ease,
     background-color 180ms ease,
@@ -1008,7 +1022,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 .skills-panel {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   border-radius: 34px;
   width: min(980px, 100%);
   margin-inline: auto;
@@ -1041,7 +1055,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   gap: 2.2rem;
   width: 100%;
-  justify-content: center;
+  justify-content: start;
 }
 
 .skills-column {
@@ -1057,7 +1071,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 
 .skills-side {
   gap: 1.2rem;
-  justify-self: center;
+  justify-self: start;
 }
 
 .skills-block {
@@ -1402,7 +1416,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 
   .profile-role {
     max-width: none;
-    font-size: 40px;
+    font-size: 28px;
   }
 
   .profile-skills-section {
@@ -1489,8 +1503,30 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 }
 
 @media (max-width: 760px) {
+  html {
+    font-size: 92%;
+  }
+
+  body {
+    font-size: 0.95rem;
+  }
+
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
   .site-header {
     position: sticky;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "logo right";
+    gap: 0.6rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+  }
+
+  .site-name {
+    display: none;
   }
 
   .header-right {
@@ -1562,7 +1598,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   .hero-overlay {
     grid-template-columns: auto 1fr;
     gap: 0.2rem;
-    padding: 0 1rem 1rem;
+    padding: 0 0.8rem 0.8rem;
   }
 
   .hero-year,
@@ -1572,17 +1608,17 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 
   .hero-year {
     justify-self: start;
-    transform: translateY(-0.55rem);
+    transform: none;
   }
 
   .hero-title {
     justify-self: end;
-    font-size: clamp(2.8rem, 15vw, 4.5rem);
-    transform: translateY(-0.55rem);
+    font-size: clamp(2.1rem, 11vw, 3.2rem);
+    transform: none;
   }
 
   .hero-year {
-    font-size: clamp(2.7rem, 12vw, 4rem);
+    font-size: clamp(1.9rem, 9.5vw, 2.9rem);
   }
 
   .profile-main {
@@ -1630,7 +1666,12 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   }
 
   .profile-role {
-    font-size: 40px;
+    font-size: clamp(0.95rem, 4.3vw, 1.2rem);
+  }
+
+  .profile-name {
+    font-size: 22px;
+    letter-spacing: 0.1em;
   }
 
   .skills-main-heading {
@@ -1642,7 +1683,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   }
 
   .profile-description {
-    font-size: 1rem;
+    font-size: 14px;
     line-height: 1.7;
   }
 
@@ -1651,8 +1692,10 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
   }
 
   .profile-resume-button {
-    width: 100%;
-    max-width: 260px;
+    width: auto;
+    max-width: none;
+    padding: 0.62rem 0.95rem;
+    font-size: 0.82rem;
   }
 
   .social-pill {
@@ -1676,7 +1719,7 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 
   .work-main,
   .project-main {
-    padding: 0 1rem 3rem;
+    padding: 0 0.8rem 2.4rem;
   }
 
   .work-hero {
@@ -1718,21 +1761,82 @@ body[data-page="feedback"] .site-nav a[href="feedback.html"] {
 
   .project-description {
     font-size: 0.98rem;
+    overflow-wrap: anywhere;
+  }
+
+  .project-title {
+    font-size: clamp(2rem, 11vw, 2.8rem);
+  }
+
+  .project-media-stream,
+  .project-media-frame,
+  .project-media {
+    width: 100%;
+    max-width: 100%;
   }
 
   .site-footer {
     flex-direction: row;
     align-items: center;
-    gap: 1.4rem;
-    padding: 0.95rem 2rem 0.85rem;
+    justify-content: space-between;
+    gap: 0.7rem;
+    padding: 0.8rem 0.8rem 0.75rem;
   }
 
   .footer-left {
-    gap: 0.4rem;
+    align-items: flex-start;
+    gap: 0.3rem;
+  }
+
+  .footer-logo {
+    width: 42px;
+    height: 42px;
+  }
+
+  .footer-copy {
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
   }
 
   .footer-right {
     align-items: center;
+    justify-content: flex-end;
+    gap: 0.2rem;
+    flex-wrap: nowrap;
+    min-width: 0;
+  }
+
+  .footer-right .footer-social:nth-child(1) {
+    order: 2;
+  }
+
+  .footer-right .footer-social:nth-child(2) {
+    order: 1;
+  }
+
+  .footer-right .footer-social:nth-child(3) {
+    order: 3;
+  }
+
+  .footer-social {
+    width: 48px;
+    height: 48px;
+    margin: 0;
+  }
+
+  .footer-social-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .footer-right .footer-social:nth-child(3) {
+    width: 44px;
+    height: 44px;
+  }
+
+  .footer-right .footer-social:nth-child(3) .footer-social-icon {
+    width: 28px;
+    height: 28px;
   }
 
   .subpage-card {
