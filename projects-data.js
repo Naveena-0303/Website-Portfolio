@@ -52,5 +52,19 @@ const PROJECTS = [
     folder: "Projects/Badaga",
     cover: "Projects/Badaga/cover.jpg",
     media: []
+  },
+  {
+    slug: "graphic-design",
+    title: "Graphic Design",
+    subtitle: "Gallery",
+    category: "Graphic Design",
+    folder: "Projects/Graphic design",
+    cover: "Projects/Graphic design/WP.jpg",
+    media: [
+      "Projects/Graphic design/WP.jpg",
+      "Projects/Graphic design/Xtep.jpg",
+      "Projects/Graphic design/Koo Poster_1.jpg",
+      "Projects/Graphic design/Keep Learning.jpg"
+    ]
   }
 ];

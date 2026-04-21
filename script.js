@@ -14,6 +14,7 @@ const WORK_FILTERS = {
     "Recreation to Relaxation",
   ],
   "visual-design": ["Badaga", "Wrapped Realities"],
+  "graphic-design": ["Graphic Design"],
 };
 
 function markActiveNav() {
@@ -54,6 +55,54 @@ function movePupils(event) {
 function resetPupils() {
   document.querySelectorAll(".pupil").forEach((pupil) => {
     pupil.style.transform = "translate(-50%, -50%)";
+  });
+}
+
+function initMobileMenu() {
+  const toggle = document.querySelector(".menu-toggle");
+  const nav = document.querySelector(".site-nav");
+
+  if (!toggle || !nav) {
+    return;
+  }
+
+  const closeMenu = () => {
+    document.body.classList.remove("menu-open");
+    toggle.classList.remove("is-open");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Open menu");
+  };
+
+  const openMenu = () => {
+    document.body.classList.add("menu-open");
+    toggle.classList.add("is-open");
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.setAttribute("aria-label", "Close menu");
+  };
+
+  toggle.addEventListener("click", () => {
+    if (document.body.classList.contains("menu-open")) {
+      closeMenu();
+      return;
+    }
+
+    openMenu();
+  });
+
+  nav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMenu();
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 760) {
+      closeMenu();
+    }
   });
 }
 
@@ -401,6 +450,8 @@ async function renderWorkPage() {
   let activeFilter = "all";
 
   const renderProjects = async (filterKey) => {
+    grid.classList.remove("work-grid-gallery");
+
     const allowedTitles = WORK_FILTERS[filterKey] || [];
     const allowedTitleSet = new Set(allowedTitles.map((title) => normalizeProjectTitle(title)));
     const filteredProjects =
@@ -410,6 +461,44 @@ async function renderWorkPage() {
 
     if (!filteredProjects.length) {
       grid.innerHTML = "";
+      return;
+    }
+
+    if (filterKey === "graphic-design") {
+      grid.classList.add("work-grid-gallery");
+
+      const galleryItems = filteredProjects.flatMap((project) =>
+        (project.media || []).map((url) => ({
+          title: project.title,
+          url,
+          type: getMediaTypeFromUrl(url),
+          slug: project.slug,
+        }))
+      );
+
+      if (!galleryItems.length) {
+        grid.innerHTML = "";
+        return;
+      }
+
+      grid.innerHTML = galleryItems
+        .map((item) => {
+          if (item.type === "video") {
+            return `
+              <a class="work-gallery-item" href="project.html?slug=${encodeURIComponent(item.slug)}" aria-label="Open ${escapeHtml(item.title)}">
+                <video class="work-gallery-media" src="${item.url}" muted playsinline preload="metadata"></video>
+              </a>
+            `;
+          }
+
+          return `
+            <a class="work-gallery-item" href="project.html?slug=${encodeURIComponent(item.slug)}" aria-label="Open ${escapeHtml(item.title)}">
+              <img class="work-gallery-media" src="${item.url}" alt="${escapeHtml(item.title)} artwork" loading="lazy" decoding="async" />
+            </a>
+          `;
+        })
+        .join("");
+
       return;
     }
 
@@ -476,6 +565,8 @@ async function renderProjectDetailPage() {
     return;
   }
 
+  stream.classList.remove("project-media-stream-gallery");
+
   const params = new URLSearchParams(window.location.search);
   const slug = params.get("slug");
   const projects = window.PROJECTS || PROJECTS;
@@ -494,6 +585,10 @@ async function renderProjectDetailPage() {
   stream.innerHTML = '<div class="project-loading">Loading project...</div>';
 
   const media = await resolveProjectMedia(project);
+
+  if (project.slug === "graphic-design") {
+    stream.classList.add("project-media-stream-gallery");
+  }
 
   if (!media.length) {
     stream.innerHTML = `
@@ -525,6 +620,7 @@ async function renderProjectDetailPage() {
 }
 
 markActiveNav();
+initMobileMenu();
 window.addEventListener("pointermove", movePupils);
 window.addEventListener("pointerleave", resetPupils);
 animateSkillsBarsOnScroll();
