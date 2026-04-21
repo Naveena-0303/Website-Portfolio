@@ -34,7 +34,35 @@ function markActiveNav() {
   });
 }
 
+  function initHamburgerMenu() {
+    const hamburger = document.querySelector(".hamburger-menu");
+    const nav = document.querySelector(".mobile-nav");
+
+    if (!hamburger || !nav) {
+      return;
+    }
+
+    hamburger.addEventListener("click", () => {
+      hamburger.classList.toggle("active");
+      nav.classList.toggle("active");
+      hamburger.setAttribute("aria-expanded", hamburger.classList.contains("active"));
+    });
+
+    // Close menu when a link is clicked
+    nav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        hamburger.classList.remove("active");
+        nav.classList.remove("active");
+        hamburger.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
 function movePupils(event) {
+  if (!eyes.length) {
+    return;
+  }
+
   eyes.forEach((eye) => {
     const pupil = eye.querySelector(".pupil");
     const rect = eye.getBoundingClientRect();
@@ -398,7 +426,7 @@ async function renderWorkPage() {
   }
 
   const projects = window.PROJECTS || PROJECTS;
-  let activeFilter = "case-studies";
+  let activeFilter = "all";
 
   const renderProjects = async (filterKey) => {
     const allowedTitles = WORK_FILTERS[filterKey] || [];
@@ -525,6 +553,7 @@ async function renderProjectDetailPage() {
 }
 
 markActiveNav();
+initHamburgerMenu();
 window.addEventListener("pointermove", movePupils);
 window.addEventListener("pointerleave", resetPupils);
 animateSkillsBarsOnScroll();
