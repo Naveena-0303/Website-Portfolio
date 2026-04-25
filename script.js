@@ -612,7 +612,7 @@ async function renderProjectDetailPage() {
 
       return `
         <figure class="project-media-frame">
-          <img class="project-media" src="${item.url}" alt="" loading="lazy" decoding="async" />
+          <img class="project-media" src="${item.url}" alt="" decoding="async" />
         </figure>
       `;
     })
