@@ -93,9 +93,8 @@ const PROJECTS = [
     title: "Graphic Design",
     subtitle: "Gallery",
     category: "Graphic Design",
-    description: "A selected gallery of posters and visual experiments focused on typography, composition, and brand expression.",
     folder: "Projects/Graphic design",
-    cover: "Projects/Graphic design/WP.jpg",
+    cover: "Projects/Graphic design/Xtep.jpg",
     media: [
       "Projects/Graphic design/WP.jpg",
       "Projects/Graphic design/WP_1.jpg",
