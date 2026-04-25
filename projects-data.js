@@ -97,6 +97,7 @@ const PROJECTS = [
     cover: "Projects/Graphic design/WP.jpg",
     media: [
       "Projects/Graphic design/WP.jpg",
+      "Projects/Graphic design/WP_1.jpg",
       "Projects/Graphic design/Xtep.jpg",
       "Projects/Graphic design/Koo Poster_1.jpg",
       "Projects/Graphic design/Keep Learning.jpg"
