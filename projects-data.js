@@ -77,7 +77,17 @@ const PROJECTS = [
     category: "Information Design",
     folder: "Projects/Wrapped Realities",
     cover: "Projects/Wrapped Realities/Cover.jpg",
-    media: []
+    media: [
+      "Projects/Wrapped Realities/01.jpg",
+      "Projects/Wrapped Realities/02.gif",
+      "Projects/Wrapped Realities/03.jpg",
+      "Projects/Wrapped Realities/04.jpg",
+      "Projects/Wrapped Realities/05.jpg",
+      "Projects/Wrapped Realities/06.jpg",
+      "Projects/Wrapped Realities/07.jpg",
+      "Projects/Wrapped Realities/08.jpg",
+      "Projects/Wrapped Realities/09.jpg"
+    ]
   },
   {
     slug: "badaga",
